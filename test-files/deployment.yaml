@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: owl-web
+  labels:
+    version: v1
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: owl-web
+  template:
+    metadata:
+      labels:
+        name: owl-web
+    spec:
+      containers:
+        - name: owl-web
+          image: foobar/owls
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: artifactory-key
