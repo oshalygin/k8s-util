@@ -2,7 +2,7 @@ sudo: required
 
 language: node_js
 node_js:
-  - "7.2.1"
+  - 7.2.1
 
 cache:
   yarn: true
@@ -12,3 +12,9 @@ script:
   - npm run test:cover
   - npm run codacity:coverage
 
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      git config credential.helper "store --file=.git/credentials";
+      echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials;
+      bash ./.travis.d/tag-version.sh;
+    fi
